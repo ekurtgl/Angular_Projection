@@ -10,55 +10,7 @@ SweepTime = 40e-3;
 fps = 1/SweepTime;
 NPpF = 60;
 
-%% get the input path and testList
-add_paths_fun();
-addpath('/mnt/HDD04/Projection_data/Scripts/Cascade_AWR2243/MatlabExamples/4chip_cascade_MIMO_example/main/cascade');
-% pro_path = getenv('CASCADE_SIGNAL_PROCESSING_CHAIN_MIMO');  % for windows
-pro_path = '/mnt/HDD04/Projection_data/Scripts/Cascade_AWR2243/MatlabExamples/4chip_cascade_MIMO_example';
-input_path = strcat(pro_path, '/main/cascade/input/');
-testList = strcat(input_path, 'testList.txt');
-antenna_azimuth_only = [1;2;3;4;17;18;19;20;33;34;35;5;6;7;8;21;22;23;24;37;38;39;40;53;54;55;56;69;70;71;72;85;86;87;88;101;
-        102;103;104;117;118;119;120;133;134;135;9;10;11;12;13;14;15;16;29;30;31;32;45;46;47;48;61;62;63;64;77;78;79;80;93;94;
-        95;96;109;110;111;112;125;126;127;128;141;142;143;144]; % retrieved from caliboj of TI's script
-%path for input folder
-fidList = fopen(testList,'r');
-testID = 1;
-PARAM_FILE_GEN_ON = 1;
-dataPlatform = 'TDA2';
-while ~feof(fidList)
-    
-    dataFolder_test_dummy = fgetl(fidList);  % don't comment out or delete
-    dataFolder_test = [fname '/'];     
-    dataFolder_calib = fgetl(fidList);
-    module_param_file = fgetl(fidList);
-    
-    pathGenParaFile = [input_path,'test',num2str(testID), '_param.m'];
-    clear(pathGenParaFile);
-    
-    %generate parameter file for the test to run
-    if PARAM_FILE_GEN_ON == 1     
-        parameter_file_gen_json(dataFolder_test, dataFolder_calib, module_param_file, pathGenParaFile, dataPlatform);
-    end
-    
-    load(dataFolder_calib)
-    calibrationObj      = calibrationCascade('pfile', pathGenParaFile, 'calibrationfilePath', dataFolder_calib);
-    
-   [fileIdx_unique] = getUniqueFileIdx(dataFolder_test);
-    for i_file = 1:(length(fileIdx_unique))
-        
-       [fileNameStruct]= getBinFileNames_withIdx(dataFolder_test, fileIdx_unique{i_file});        
-       
-      calibrationObj.binfilePath = fileNameStruct;
-        
-       [numValidFrames dataFileSize] = getValidNumFrames(fullfile(dataFolder_test, fileNameStruct.masterIdxFile));
-            adcData = datapath_v2(calibrationObj, numValidFrames);
-            
-%             RDC = adcData(:,:,calibrationObj.RxForMIMOProcess,:);
-            RDC = adcData(:,:,calibrationObj.RxForMIMOProcess, calibrationObj.IdTxForMIMOProcess);            
-            
-    end
-end
-
+RDC = RDC_extract_cascade_AWR2243(fname);
 
 RDC = reshape(RDC,size(RDC,1), size(RDC,2), size(RDC,3)*size(RDC,4));
 
