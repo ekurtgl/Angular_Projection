@@ -12,7 +12,8 @@ function [] = RDC_to_microDoppler_projection_fun(RDC, NPpF, ang, fNameOut)
  
          % take FFT on each channel separately, otherwise range profile gets corrupted
          % limit range bins after plotting
-         
+%          num_el = 86;
+%          RDC = RDC(:,:,1:num_el);
          for i = 1:size(RDC,3)
                  RDC(:,:, i) = fft(RDC(:,:, i));
          end
@@ -23,22 +24,23 @@ function [] = RDC_to_microDoppler_projection_fun(RDC, NPpF, ang, fNameOut)
         %% original spect
         rBin = 1:256;
         nfft = 2^12;window = 256;noverlap = 200;shift = window - noverlap;
-%         sx = myspecgramnew(sum(RDC(rBin,:,1)),window,nfft,shift); 
-%         sx2 = abs(flipud(fftshift(sx,1)));
-%         figure('visible','off');
-%         colormap(jet(256));
-%         imagesc(timeAxis,[-prf/2 prf/2],20*log10(sx2 / max(sx2(:))));
+        sx = myspecgramnew(sum(RDC(rBin,:,1)),window,nfft,shift); 
+        sx2 = abs(flipud(fftshift(sx,1)));
+        figure('visible','off');
+        colormap(jet(256));
+        imagesc(timeAxis,[-prf/2 prf/2],20*log10(sx2 / max(sx2(:))));
 %         colorbar;
-% %         set(gcf,'units','normalized','outerposition',[0,0,1,1]);
-%          caxis([-40 0]) % 40
-% %         clim = get(gca,'CLim');
-% %         set(gca, 'YDir','normal','clim',[clim(1)+90 clim(2)])
+%         set(gcf,'units','normalized','outerposition',[0,0,1,1]);
+         caxis([-40 0]) % 40
+%         clim = get(gca,'CLim');
+%         set(gca, 'YDir','normal','clim',[clim(1)+90 clim(2)])
 %         axis([0 timeAxis(end) -prf/2 prf/2])
-%         
-%         ylabel('Frequency (Hz)');
-%         xlabel('Times (s)');
-%         frame = frame2im(getframe(gcf));
-%         imwrite(frame,[fNameOut(1:end-4) '_orig.png']);
+        
+        set(gca,'xtick',[],'ytick',[])
+        set(gca, 'YDir','normal')
+        frame = frame2im(getframe(gca));
+        %         imwrite(frame,[fNameOut(1:end-4) '_right_' int2str(i) '.png']);
+        imwrite(frame,[fNameOut(1:end-4) '_orig.png']);
         %% Steering Matrix
         
         ang_ax = -90:90;
@@ -125,7 +127,7 @@ function [] = RDC_to_microDoppler_projection_fun(RDC, NPpF, ang, fNameOut)
                 figure('visible','off');
                 colormap(jet(256));
                 imagesc(timeAxis,[-prf/2 prf/2],20*log10(sx2 / max(sx2(:))));
-                colorbar;
+%                 colorbar;
                 %         set(gcf,'units','normalized','outerposition',[0,0,1,1]);
                 caxis([-40 0]) % 40
                 %         clim = get(gca,'CLim');
@@ -137,10 +139,10 @@ function [] = RDC_to_microDoppler_projection_fun(RDC, NPpF, ang, fNameOut)
                 set(gca, 'YDir','normal')
                 frame = frame2im(getframe(gca));
                 %         imwrite(frame,[fNameOut(1:end-4) '_right_' int2str(i) '.png']);
-                imwrite(frame,[fNameOut(1:end-4) '_weight' int2str(weight) '_proj' int2str(ang(i)) '.png']);
+                imwrite(frame,[fNameOut(1:end-4) '_proj' int2str(ang(i)) '.png']);
                 
         end
-        
+        close all
 %         for c = 1:size(RDC,2)
 % %                 disp([int2str(c) '/' int2str(size(RDC,2))]);
 %             for r = 1:size(RDC,1)

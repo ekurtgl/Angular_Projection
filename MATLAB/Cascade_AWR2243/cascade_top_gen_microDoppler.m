@@ -13,7 +13,7 @@ for i = 1:length(subfolds)
 %         fOut = [outpath subfolds(i).name '.mat'];
         fOut = [outpath subfolds(i).name '.png'];
         RDC = RDC_extract_cascade_AWR2243(fname);
-        RDC_to_microDopp_cascade( RDC, fOut, 1)
+%         RDC_to_microDopp_cascade( RDC, fOut, 1)
         RDC_to_microDopp_cascade( RDC, fOut, 0)
 %         RDC_to_microDopp_cascade_2Dfft( RDC, fOut, 0)
         toc

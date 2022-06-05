@@ -2,9 +2,9 @@ clc; clear; close all;
 
 fname = '/mnt/HDD04/Projection_data/Cascade_AWR2243/pAhmed_class1_ang-45_iter1';
 MTI = 0;
-M_pulse = 60;
-K = 1;
-OF = 0;
+M_pulse = 60; % num. pulses to be used in cov matrix
+K = 1; % num. of targets
+OF = 0; % optical flow
 
 SweepTime = 40e-3;
 fps = 1/SweepTime;
@@ -116,8 +116,6 @@ open(writerObj);
 for i=1:length(F)
         frame = F(i) ;
         writeVideo(writerObj, frame);
-        %         frame2 = F2(i);
-        %         writeVideo(writerObj2, frame2);
 end
 close(writerObj);
 close all

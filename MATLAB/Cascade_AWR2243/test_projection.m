@@ -1,14 +1,16 @@
 clc; clear; close all
 
 main = '/mnt/HDD04/Projection_data/Cascade_AWR2243/';
-% fnames = {'/mnt/HDD04/Projection_data/Cascade_AWR2243/pAhmed_class1_ang-45_iter2',
-%         '/mnt/HDD04/Projection_data/Cascade_AWR2243/pSpot_class4_ang+45_iter1'};
-file1 = 'pCemreRony_class6-1_ang0+45_iter1';
-fnames =  {[main file1]};
+fnames = {'/mnt/HDD04/Projection_data/Cascade_AWR2243/pAhmed_class1_ang-45_iter2', ...
+        '/mnt/HDD04/Projection_data/Cascade_AWR2243/pSpot_class4_ang+45_iter2', ...
+        [main 'pAhmed_class6_ang0_iter5']};
+% file1 = 'pCemreRony_class6-1_ang0+45_iter1';
+% fnames =  {[main file1]};
 % fNameOut= 'ahmedspot_class1-4_ang-45+45_withweight.png';
 % fNameOut= 'spot_class4_ang+45.png';
 % fNameOut = [fnames{1} '.png'];
-fNameOut = ['results/' file1 '.png'];
+% fNameOut = ['results/' file1 '.png'];
+fNameOut = ['results/ahmet1_spot4.png'];
 
 NPpF = 60;
 antenna_azimuth_only = [1;2;3;4;17;18;19;20;33;34;35;5;6;7;8;21;22;23;24;37;38;39;40;53;54;55;56;69;70;71;72;85;86;87;88;101;

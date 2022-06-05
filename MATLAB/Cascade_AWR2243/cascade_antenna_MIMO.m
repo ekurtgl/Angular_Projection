@@ -99,7 +99,9 @@ for d = 1:num_dev
     end
 end
 
+%% Azimuth channels
 
+% find az antenna bounds
 
 
 
