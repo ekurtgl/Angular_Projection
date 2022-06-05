@@ -45,13 +45,13 @@ function [radar_data_Rxchain] = read_ADC_bin_TDA2_separateFiles_v2(fileNameCasca
 %  [radar_data_Rxchain_slave1] = readBinFile(fileFullPath_slave1, frameIdx,numSamplePerChirp,numChirpPerLoop,numLoops, numRXPerDevice, numDevices);
 %  [radar_data_Rxchain_slave2] = readBinFile(fileFullPath_slave2, frameIdx,numSamplePerChirp,numChirpPerLoop,numLoops, numRXPerDevice, numDevices);
 %  [radar_data_Rxchain_slave3] = readBinFile(fileFullPath_slave3, frameIdx,numSamplePerChirp,numChirpPerLoop,numLoops, numRXPerDevice, numDevices);
- disp('Processing device 1/4'); 
+%  disp('Processing device 1/4'); 
  [radar_data_Rxchain_master] = readBinFile(fileFullPath_master, numSamplePerChirp,numChirpPerLoop,numLoops, numRXPerDevice, numValidFrames); 
- disp('Processing device 2/4');
+%  disp('Processing device 2/4');
  [radar_data_Rxchain_slave1] = readBinFile(fileFullPath_slave1, numSamplePerChirp,numChirpPerLoop,numLoops, numRXPerDevice, numValidFrames);
- disp('Processing device 3/4');
+%  disp('Processing device 3/4');
  [radar_data_Rxchain_slave2] = readBinFile(fileFullPath_slave2, numSamplePerChirp,numChirpPerLoop,numLoops, numRXPerDevice, numValidFrames);
- disp('Processing device 4/4');
+%  disp('Processing device 4/4');
  [radar_data_Rxchain_slave3] = readBinFile(fileFullPath_slave3, numSamplePerChirp,numChirpPerLoop,numLoops, numRXPerDevice, numValidFrames);
 
 % Arranged based on Master RxChannels, Slave1 RxChannels, slave2 RxChannels, slave3 RxChannels 

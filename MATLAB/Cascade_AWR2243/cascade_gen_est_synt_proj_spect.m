@@ -12,8 +12,15 @@ for s = 1:length(subfolds)
         
         orig_files = dir([subpath subfolds{s} '*_orig.png']);
         outpath = [subpath 'est_' subfolds{s}];
+        
+        if s == 1
+                dummy_num = 48;
+        else
+                dummy_num = 1;
+        end
+        
+        for o = dummy_num:length(orig_files)
                 
-        for o = 1:length(orig_files)
                 tic
                 disp([subfolds{s} ', ' int2str(o) '/' int2str(length(orig_files))]);
                 cur_org_file = [orig_files(o).folder '/' orig_files(o).name];
@@ -51,7 +58,6 @@ for s = 1:length(subfolds)
                 end
                 
                 com_RDC = RDCs{1};
-                
                 for rdc = 2:length(RDCs)
                         com_RDC = com_RDC + RDCs{rdc};
                 end
@@ -63,8 +69,12 @@ for s = 1:length(subfolds)
                         fNameOut = [fNameOut '_' fnames{3}];
                 end
                 fNameOut = [fNameOut  '.png'];
+                
+                slash_id = find(fNameOut == '/');
+                disp([fNameOut(slash_id(end)+1:end-4) ' --> Estimated angles: ' int2str(proj_angles)]);
+                
                 RDC_to_microDoppler_projection_fun(com_RDC, NPpF, proj_angles, fNameOut);
-                toc
+                disp(['Elapsed time: ' int2str(toc) ' sec'])
         end
 end
 

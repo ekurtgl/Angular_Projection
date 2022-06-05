@@ -73,6 +73,7 @@ function [proj_angles] = RDC_to_rangeDopp_with_angle_est_v2(RDC)
         tot_ang_list = [];
         tot_cnt_list = [];
         for k = 1:n_frames
+%                 disp(['Frame ' int2str(k) '/' int2str(n_frames)]);
 %                 if mod(k,50) == 1 
 %                         disp(['Frame ' int2str(k) '/' int2str(n_frames)]);
 %                 end
@@ -81,6 +82,7 @@ function [proj_angles] = RDC_to_rangeDopp_with_angle_est_v2(RDC)
 %                 RData_frame = bsxfun(@minus, RData_frame, mean(RData_frame,2));   % subtract stationary objects
                 G_frame = zeros(size(RData_frame));
                 for i = 1:size(G_frame, 3)
+%                         disp(['ch ' int2str(i) '/' int2str(size(G_frame, 3))]);
                         G_frame(:,:,i) = fft(RData_frame(:,:,i));
                         G_frame(:,:,i) = G_frame(:,:,i) - repmat(mean(G_frame(:,:,i), 2), [1, size(G_frame(:,:,i), 2)]); % DC removal
                         G_frame(:,:,i) = fftshift(fft(G_frame(:,:,i), [], 2), 2);
@@ -90,6 +92,9 @@ function [proj_angles] = RDC_to_rangeDopp_with_angle_est_v2(RDC)
                 %         time_Counter = (k/n_frames)*duration;
                 [RDM_mask, cfar_ranges, cfar_dopps] = ca_cfar(RDM_dB, numGuard, numTrain, P_fa, SNR_OFFSET);
                 
+                if length(cfar_ranges) > 500
+                        continue
+                end
                 if ~isempty(cfar_ranges)
 %                         cfar_bins(1,k) = min(cfar_ranges);
 %                         cfar_bins(2,k) = max(cfar_ranges);
