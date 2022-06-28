@@ -3,7 +3,7 @@ clc; clear; close all;
 main = '/mnt/HDD04/Projection_data/Cascade_AWR2243/';
 fnames = cell(1,3);
 fnames{1} = 'pRony_class1_ang0_iter3';
-fnames{2} = 'pRony_class6_ang-45_iter1';
+fnames{2} = 'pSpot_class14_ang-45_iter9';
 fnames{3} = 'pAhmed_class7_ang+45_iter4';
 
 num_elem = [4 8 16 32 64 72 86];
