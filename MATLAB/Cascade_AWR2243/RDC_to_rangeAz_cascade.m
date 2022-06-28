@@ -1,6 +1,7 @@
 clc; clear; close all;
 
-fname = '/mnt/HDD04/Projection_data/Cascade_AWR2243/pAhmed_class1_ang-45_iter1';
+file = 'pThreeNarrowWalkSame_class2_ang0_iter2';
+fname = ['/mnt/HDD04/Projection_data/Cascade_REUs_multi-target/' file];
 MTI = 0;
 M_pulse = 60; % num. pulses to be used in cov matrix
 K = 1; % num. of targets
@@ -52,13 +53,20 @@ for k=1:length(ang_ax)
         a1(:,k)=exp(-1i*2*pi*(d*(0:size(RDC_az,3)-1)'*sin(ang_ax(k).'*pi/180)));
 end
 
+%% CA-CFAR params
+
+numGuard = 4;
+numTrain = numGuard*2;
+P_fa = 1e-5; % Prob of false alarm
+SNR_OFFSET = -1; % -5
+
 %% Range-Az map
 
 figure('visible','off')
 colormap(jet)
 for j = 1:n_frames
         disp(['Frame ' int2str(j) '/' int2str(n_frames)]);
-        for i = 1:70 % size(RDC_az,1)
+        for i = 1:90 % size(RDC_az,1)
                 
                 Rxx = zeros(size(a1,1),size(a1,1));
                             
@@ -92,32 +100,49 @@ for j = 1:n_frames
             set(gca, 'CLim',[-25,0]);
         else
 %             imagesc(ang_ax,[],10*log10(abs(range_az_music(1:rangelimMatrix,:))./max(abs(range_az_music(:)))));
-            imagesc(ang_ax,[],10*log10(abs(range_az_music)./max(abs(range_az_music(:)))));
+            RAM_dB = 10*log10(abs(range_az_music)./max(abs(range_az_music(:))));
+            [RAM_mask, cfar_ranges, cfar_dopps] = ca_cfar(RAM_dB, numGuard, numTrain, P_fa, SNR_OFFSET);
+            imagesc(ang_ax,[],RAM_dB);
         end
 
         xlabel('Azimuth')   
+        colormap(jet)
         ylabel('Range (m)')
 %                 set(gca, 'CLim',[-35,0]); % [-35,0]
-        axis([-60 60 0 70])
+        axis([-60 60 0 90])
 %                 title('MUSIC Range-Angle Map')
 %                 clim = get(gca,'clim');
         drawnow
-        F(j) = getframe(gcf); % gcf returns the current figure handle          
+        F(j) = getframe(gcf); % gcf returns the current figure handle
+        
+        imagesc(ang_ax,[],RAM_mask);
+        axis([-60 60 0 90])
+        colormap(parula)
+        drawnow
+        F2(j) = getframe(gcf); % gcf returns the current figure handle
 end
 
 
 % fname = [fNameOut(1:end-4) '_K' int2str(K) '_Mpulse' ...
 % int2str(M_pulse) '_MTI' int2str(MTI) '_OF' int2str(OF) '_azimuth.avi'];
-fname = 'test_noMTI_ang-45.avi';
+fname = [file '_MTI' num2str(MTI) '.avi'];
 writerObj = VideoWriter(fname);
 writerObj.FrameRate = fps;
 open(writerObj);
 
+writerObj2 = VideoWriter([fname(1:end-4) '_cfar.avi']);
+writerObj2.FrameRate = fps;
+open(writerObj2);
+
+
 for i=1:length(F)
-        frame = F(i) ;
+        frame = F(i);
         writeVideo(writerObj, frame);
+        frame2 = F2(i);
+        writeVideo(writerObj2, frame2);
 end
 close(writerObj);
+close(writerObj2);
 close all
 
 
