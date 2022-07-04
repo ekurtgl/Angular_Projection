@@ -3,13 +3,13 @@ clc; clear; close all;
 num_channels = [4 16 32 72 86];
 angs = {'-30' '-15' '0' '+15' '+30' '+45'};
 ang_ax = [-30 -15 0 15 30 45];
-main = 'C:\Users\emrek\Desktop\Publications\Projection Journal\proj\matlab\Cascade_Alperen\';
-main2 = 'C:\Users\emrek\Desktop\Publications\Projection Journal\proj\data\';
-origpath = [main 'microDoppler\'];
-origpath2 = [main2 'microDoppler\'];
-twoact = [main 'projected3\'];
+main = '/mnt/HDD04/Projection_data/OUTPUTS/Cascade_Alperen/';
+main2 = '/mnt/HDD04/Projection_data/OUTPUTS/Cascade_AWR2243/';
+origpath = [main 'microDoppler/'];
+origpath2 = [main2 'microDoppler/'];
+twoact = [main 'projected5/'];
 
-f1 = 'pMehedi_class5_ang-45_iter1.png';
+f1 = 'pCemre_class7_ang-45_iter2.png';
 
 sim_img = zeros(4, 3, length(num_channels), length(angs));
 for i = 1:length(angs)
@@ -51,16 +51,16 @@ sssim_mat = squeeze(sim_img(4, 1, :, :));
 figure
 fontsize = 15;
 hold on; grid on
-p1 = plot(ang_ax, mse_mat(1,:));
-p2 = plot(ang_ax, mse_mat(2,:));
-p3 = plot(ang_ax, mse_mat(3,:));
-p4 = plot(ang_ax, mse_mat(4,:));
-p5 = plot(ang_ax, mse_mat(5,:));
-% p1 = plot(ang_ax, sssim_mat(1,:));
-% p2 = plot(ang_ax, sssim_mat(2,:));
-% p3 = plot(ang_ax, sssim_mat(3,:));
-% p4 = plot(ang_ax, sssim_mat(4,:));
-% p5 = plot(ang_ax, sssim_mat(5,:));
+% p1 = plot(ang_ax, mse_mat(1,:));
+% p2 = plot(ang_ax, mse_mat(2,:));
+% p3 = plot(ang_ax, mse_mat(3,:));
+% p4 = plot(ang_ax, mse_mat(4,:));
+% p5 = plot(ang_ax, mse_mat(5,:));
+p1 = plot(ang_ax, sssim_mat(1,:));
+p2 = plot(ang_ax, sssim_mat(2,:));
+p3 = plot(ang_ax, sssim_mat(3,:));
+p4 = plot(ang_ax, sssim_mat(4,:));
+p5 = plot(ang_ax, sssim_mat(5,:));
 xticks(ang_ax);
 xticklabels(angs);
 legend([p1 p2 p3 p4, p5], {'4 elements', '16 elements', '32 elements', '72 elements', '86 elements'}, 'fontname', 'times new roman', 'location', 'best')
